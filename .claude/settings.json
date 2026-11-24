@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/server.key)",
+      "Read(~/.sfdx/**)",
+      "Read(~/.sf/*@*.json)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/credentials)"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          { "type": "command", "command": "python3 -I \"$CLAUDE_PROJECT_DIR/.claude/hooks/secret_guard.py\"" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Read|Grep|Glob|Bash",
+        "hooks": [
+          { "type": "command", "command": "python3 -I \"$CLAUDE_PROJECT_DIR/.claude/hooks/secret_guard.py\"" }
+        ]
+      }
+    ]
+  }
+}
